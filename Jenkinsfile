@@ -4,8 +4,23 @@ pipeline {
 
     stages {
 
-        stage('Check Files') {
+        stage('Install Dependencies') {
             steps {
+                echo 'Static HTML project - no dependencies required'
+            }
+        }
+
+
+        stage('Run Tests') {
+            steps {
+                bat 'if exist index.html (echo index.html found) else (exit 1)'
+            }
+        }
+
+
+        stage('Build') {
+            steps {
+                echo 'Preparing static website files'
                 bat 'dir'
             }
         }
@@ -20,7 +35,7 @@ pipeline {
                             transfers: [
                                 sshTransfer(
                                     sourceFiles: 'index.html',
-                                    remoteDirectory: '/home/ubuntu'
+                                    remoteDirectory: '/var/www/html'
                                 )
                             ],
                             verbose: true
@@ -28,6 +43,17 @@ pipeline {
                     ]
                 )
             }
+        }
+    }
+
+
+    post {
+        success {
+            echo 'Deployment completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
