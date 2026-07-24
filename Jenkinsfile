@@ -4,17 +4,9 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/priyanshxp/cicd.git'
-            }
-        }
-
-
         stage('Check Files') {
             steps {
-                sh 'ls -la'
+                bat 'dir'
             }
         }
 
